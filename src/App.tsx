@@ -6,7 +6,7 @@ export function App() {
         <h1>A/B Test Conversion Rate</h1>
       </header>
       <main >
-        {/* Тут позже будет наш график */}
+        npm install -D sass
         <p>Chart coming soon…</p>
       </main>
     </div>
