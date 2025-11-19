@@ -35,4 +35,20 @@ body {
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
+
+    --bg: #ffffff;
+    --text: #111111;
+
+    --chart-grid: rgba(0, 0, 0, 0.1);
+    --chart-line-original: #8884d8;
+    --chart-line-a: #ff7300;
+    --chart-line-b: #82ca9d;
+    --chart-line-c: #d84a90;
+}
+
+.theme-dark {
+    --bg: #0f172a;
+    --text: #e2e8f0;
+
+    --chart-grid: rgba(255, 255, 255, 0.1);
 }
