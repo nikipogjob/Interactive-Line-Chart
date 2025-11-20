@@ -1,3 +1,4 @@
+import ConversionChart from "./components/conversion-chart/conversion-chart";
 
 export function App() {
   return (
@@ -6,8 +7,7 @@ export function App() {
         <h1>A/B Test Conversion Rate</h1>
       </header>
       <main >
-
-        <p>Chart coming soon…</p>
+        <ConversionChart />
       </main>
     </div>
   );
