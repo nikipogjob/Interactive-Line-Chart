@@ -20,3 +20,8 @@ export interface DayPoint {
 }
 
 export type VariationFieldKey = Exclude<keyof DayPoint, 'date'>;
+
+export interface VariationsConfig {
+    key: VariationFieldKey;
+    name: string;
+}

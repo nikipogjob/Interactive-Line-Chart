@@ -1,6 +1,6 @@
 import type { DayPoint, TotalData } from "../types/data";
 import data from '../data/data.json'
-import { VARIATION_KEY_BY_ID } from "../const";
+import { VariationKeyById } from "../const";
 
 
 const chartData = data as unknown as TotalData;
@@ -16,7 +16,7 @@ export function getDailyChartPoints(): DayPoint[] {
         };
 
 
-        Object.entries(VARIATION_KEY_BY_ID).forEach(([id, key]) => {
+        Object.entries(VariationKeyById).forEach(([id, key]) => {
             const visits = day.visits[id];
             const conversions = day.conversions[id];
 

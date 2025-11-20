@@ -1,8 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { getDailyChartPoints } from '../../utils/data-preparation';
 import styles from './conversion-chart.module.scss';
-
-
+import { VariationColor, variationSeries } from '../../const';
 
 
 const dailyData = getDailyChartPoints()
@@ -22,13 +21,18 @@ export default function ConversionChart() {
                     <Tooltip
                         formatter={(value: number) => `${value.toFixed(2)}%`}
                     />
-                    <Line
-                        type="monotone"
-                        dataKey="original"
-                        stroke="#8884d8"
-                        dot={false}
-                        name='Original'
-                    />
+
+                    {variationSeries.map(({ key, name }) => (
+                        <Line
+                            key={key}
+                            type="monotone"
+                            dataKey={key}
+                            stroke={VariationColor[key]}
+                            dot={false}
+                            name={name}
+                        />
+                    ))}
+
                 </LineChart>
             </ResponsiveContainer>
         </div>
