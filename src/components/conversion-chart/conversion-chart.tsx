@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { getDailyChartPoints } from '../../utils/data-preparation';
 import styles from './conversion-chart.module.scss';
-import { VariationColor, variationSeries } from '../../const';
+import { VariationColor, VariationKeyById } from '../../const';
 import { useState } from 'react';
 import type { VariationName } from '../../types/variation';
 
@@ -11,29 +11,29 @@ export default function ConversionChart() {
     const conversionRates = getDailyChartPoints();
 
     const [selectedKeys, setSelectedKeys] = useState<VariationName[]>(
-        variationSeries.map((k) => k.name)
+        Object.values(VariationKeyById)
     );
 
-    const toggleVariation = (key: VariationName) => {
+
+    const toggleVariation = (name: VariationName) => {
         setSelectedKeys((prev) => {
 
-            if (prev.includes(key)) {
+            if (prev.includes(name)) {
 
                 if (prev.length === 1) return prev;
-                return prev.filter((k) => k !== key);
+                return prev.filter((n) => n !== name);
             }
 
-            return [...prev, key];
+            return [...prev, name];
         });
     };
-
 
 
     return (
 
         <div className={styles.conversionChart}>
             <div className={styles['conversion-chart__controls']}>
-                {variationSeries.map(({ name }) => (
+                {Object.values(VariationKeyById).map((name) => (
                     <label key={name}>
                         <input
                             type="checkbox"
@@ -57,9 +57,9 @@ export default function ConversionChart() {
                     <Tooltip
                         formatter={(value: number) => `${value.toFixed(2)}%`}
                     />
-                    {variationSeries
-                        .filter(({ name }) => selectedKeys.includes(name))
-                        .map(({ name }) => (
+                    {Object.values(VariationKeyById)
+                        .filter((name) => selectedKeys.includes(name))
+                        .map((name) => (
                             <Line
                                 key={name}
                                 type="monotone"

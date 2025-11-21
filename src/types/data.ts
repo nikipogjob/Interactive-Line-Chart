@@ -1,4 +1,4 @@
-import type { Variation, VariationName } from "./variation";
+import type { Variation } from "./variation";
 
 export interface DailyData {
     date: string;
@@ -17,8 +17,4 @@ export interface DayPoint {
     'Variation A': number | null;
     'Variation B': number | null;
     'Variation C': number | null;
-}
-
-export interface VariationsConfig {
-    name: VariationName;
 }

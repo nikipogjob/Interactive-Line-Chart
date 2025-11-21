@@ -1,4 +1,3 @@
-import type { VariationsConfig } from "./types/data";
 import type { VariationName } from "./types/variation";
 
 
@@ -17,9 +16,3 @@ export const VariationColor: Record<VariationName, string> = {
 } as const;
 
 
-export const variationSeries: VariationsConfig[] = [
-    { name: 'Original' },
-    { name: 'Variation A' },
-    { name: 'Variation B' },
-    { name: 'Variation C' },
-] as const;
