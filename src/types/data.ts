@@ -1,4 +1,4 @@
-import type { Variation } from "./variation";
+import type { Variation, VariationName } from "./variation";
 
 export interface DailyData {
     date: string;
@@ -12,16 +12,13 @@ export interface TotalData {
 }
 
 export interface DayPoint {
-    date: string;
-    original: number | null;
-    variationA: number | null;
-    variationB: number | null;
-    variationC: number | null;
+    'date': string;
+    'Original': number | null;
+    'Variation A': number | null;
+    'Variation B': number | null;
+    'Variation C': number | null;
 }
 
-export type VariationFieldKey = Exclude<keyof DayPoint, 'date'>;
-
 export interface VariationsConfig {
-    key: VariationFieldKey;
-    name: string;
+    name: VariationName;
 }

@@ -8,11 +8,11 @@ const chartData = data as unknown as TotalData;
 export function getDailyChartPoints(): DayPoint[] {
     return chartData.data.map<DayPoint>((day) => {
         const point: DayPoint = {
-            date: day.date,
-            original: null,
-            variationA: null,
-            variationB: null,
-            variationC: null,
+            'date': day.date,
+            'Original': null,
+            'Variation A': null,
+            'Variation B': null,
+            'Variation C': null,
         };
 
 

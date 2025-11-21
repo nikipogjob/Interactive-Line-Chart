@@ -1,24 +1,25 @@
-import type { VariationFieldKey, VariationsConfig } from "./types/data";
+import type { VariationsConfig } from "./types/data";
+import type { VariationName } from "./types/variation";
 
 
-export const VariationKeyById: Record<string, VariationFieldKey> = {
-    '0': 'original',
-    '10001': 'variationA',
-    '10002': 'variationB',
-    '10003': 'variationC',
+export const VariationKeyById: Record<string, VariationName> = {
+    '0': 'Original',
+    '10001': 'Variation A',
+    '10002': 'Variation B',
+    '10003': 'Variation C',
 } as const;
 
-export const VariationColor: Record<VariationFieldKey, string> = {
-    original: '#46464F',
-    variationA: '#4142EF',
-    variationB: '#FF8346',
-    variationC: '#35BDAD',
+export const VariationColor: Record<VariationName, string> = {
+    Original: '#46464F',
+    'Variation A': '#4142EF',
+    'Variation B': '#FF8346',
+    'Variation C': '#35BDAD',
 } as const;
 
 
 export const variationSeries: VariationsConfig[] = [
-    { key: 'original', name: 'Original' },
-    { key: 'variationA', name: 'Variation A' },
-    { key: 'variationB', name: 'Variation B' },
-    { key: 'variationC', name: 'Variation C' },
+    { name: 'Original' },
+    { name: 'Variation A' },
+    { name: 'Variation B' },
+    { name: 'Variation C' },
 ] as const;
