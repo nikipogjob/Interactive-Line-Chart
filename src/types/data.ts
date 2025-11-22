@@ -1,4 +1,4 @@
-import type { Variation } from "./variation";
+import type { Variation, VariationName } from "./variation";
 
 export interface DailyData {
     date: string;
@@ -11,10 +11,22 @@ export interface TotalData {
     data: DailyData[];
 }
 
-export interface DayPoint {
+export interface VariationPoint {
     'date': string;
     'Original': number | null;
     'Variation A': number | null;
     'Variation B': number | null;
     'Variation C': number | null;
 }
+
+export type WeeklySums = Record<VariationName, {
+    visits: number;
+    conversions: number;
+}>;
+
+export type WeekRange = {
+    startDate: string;
+    endDate: string;
+    sums: WeeklySums;
+};
+

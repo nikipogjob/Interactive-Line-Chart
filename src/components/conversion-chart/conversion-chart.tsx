@@ -1,18 +1,21 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { getDailyChartPoints } from '../../utils/data-preparation';
+import { getDailyChartPoints, getWeeklyChartPoints } from '../../utils/data-preparation';
 import styles from './conversion-chart.module.scss';
-import { VariationColor, VariationKeyById } from '../../const';
+import { timeIntervals, VariationColor, VariationKeyById } from '../../const';
 import { useState } from 'react';
-import type { VariationName } from '../../types/variation';
+import type { VariationName, TimeInterval } from '../../types/variation';
 
 
 export default function ConversionChart() {
 
-    const conversionRates = getDailyChartPoints();
+    const dailyConversionRates = getDailyChartPoints();
+    const weeklyConversionRates = getWeeklyChartPoints();
 
     const [selectedKeys, setSelectedKeys] = useState<VariationName[]>(
         Object.values(VariationKeyById)
     );
+
+    const [selectedInterval, setSelectedInterval] = useState<TimeInterval>('Day');
 
 
     const toggleVariation = (name: VariationName) => {
@@ -26,6 +29,10 @@ export default function ConversionChart() {
 
             return [...prev, name];
         });
+    };
+
+    const toggleInterval = (interval: TimeInterval) => {
+        setSelectedInterval(interval);
     };
 
 
@@ -44,9 +51,23 @@ export default function ConversionChart() {
                     </label>
                 ))}
             </div>
+            <div className={styles['conversion-chart__controls']}>
+                {timeIntervals.map((interval) => (
+
+                    <label key={interval}>
+                        <input
+                            type="radio"
+                            checked={selectedInterval === interval}
+                            onChange={() => toggleInterval(interval)}
+                        />
+
+                        {interval}
+                    </label>
+                ))}
+            </div>
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart
-                    data={conversionRates}
+                    data={selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates}
                     margin={{ top: 16, right: 16, bottom: 16, left: 0 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
