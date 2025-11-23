@@ -1,0 +1,75 @@
+.conversion-tooltip {
+    background-color: #ffffff;
+    border-radius: 0.8rem;
+    box-shadow:
+        0 10px 20px rgba(15, 23, 42, 0.08),
+        0 2px 4px rgba(15, 23, 42, 0.04);
+    padding: 1.2rem 1.6rem;
+    min-width: 18rem; // по макету подгонишь
+    font-size: 1.2rem;
+}
+
+.conversion-tooltip__header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.conversion-tooltip__date-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    background-image: url('/icons/calendar.svg'); // или свой React-иконкомпонент
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.conversion-tooltip__date {
+    font-weight: 500;
+}
+
+.conversion-tooltip__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.conversion-tooltip__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-top: 1px dashed #e5e7eb;
+
+    &:first-child {
+        border-top: none;
+    }
+}
+
+.conversion-tooltip__row-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.conversion-tooltip__dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+}
+
+.conversion-tooltip__name {
+    white-space: nowrap;
+}
+
+.conversion-tooltip__trophy {
+    width: 1.4rem;
+    height: 1.4rem;
+    background-image: url('/icons/trophy.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.conversion-tooltip__value {
+    font-variant-numeric: tabular-nums;
+}

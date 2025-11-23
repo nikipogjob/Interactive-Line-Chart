@@ -6,6 +6,7 @@ import { useState } from 'react';
 import type { VariationName, TimeInterval } from '../../types/variation';
 import { IntervalSelect } from '../interval-select/interval-select';
 import { VariationSelect } from '../variation-select/variation-select';
+import { ConversionTooltip } from '../conversion-tooltip/conversion-tooltip';
 
 
 export default function ConversionChart() {
@@ -54,7 +55,8 @@ export default function ConversionChart() {
                         unit="%"
                     />
                     <Tooltip
-                        formatter={(value: number) => `${value.toFixed(2)}%`}
+                        content={<ConversionTooltip />}
+                        cursor={{ stroke: '#D0D5DD', strokeWidth: 1 }}
                     />
                     {Object.values(VariationKeyById)
                         .filter((name) => selectedVariation.includes(name))
