@@ -4,6 +4,8 @@ import styles from './conversion-chart.module.scss';
 import { timeIntervals, VariationColor, VariationKeyById } from '../../const';
 import { useState } from 'react';
 import type { VariationName, TimeInterval } from '../../types/variation';
+import { IntervalSelect } from '../interval-select/interval-select';
+import { VariationSelect } from '../variation-select/variation-select';
 
 
 export default function ConversionChart() {
@@ -11,67 +13,43 @@ export default function ConversionChart() {
     const dailyConversionRates = getDailyChartPoints();
     const weeklyConversionRates = getWeeklyChartPoints();
 
-    const [selectedKeys, setSelectedKeys] = useState<VariationName[]>(
+    const [selectedVariation, setSelectedVariation] = useState<VariationName[]>(
         Object.values(VariationKeyById)
     );
 
     const [selectedInterval, setSelectedInterval] = useState<TimeInterval>('Day');
 
-
-    const toggleVariation = (name: VariationName) => {
-        setSelectedKeys((prev) => {
-
-            if (prev.includes(name)) {
-
-                if (prev.length === 1) return prev;
-                return prev.filter((n) => n !== name);
-            }
-
-            return [...prev, name];
-        });
-    };
-
-    const toggleInterval = (interval: TimeInterval) => {
-        setSelectedInterval(interval);
-    };
-
-
     return (
 
-        <div className={styles.conversionChart}>
-            <div className={styles['conversion-chart__controls']}>
-                {Object.values(VariationKeyById).map((name) => (
-                    <label key={name}>
-                        <input
-                            type="checkbox"
-                            checked={selectedKeys.includes(name)}
-                            onChange={() => toggleVariation(name)}
-                        />
-                        {name}
-                    </label>
-                ))}
-            </div>
-            <div className={styles['conversion-chart__controls']}>
-                {timeIntervals.map((interval) => (
+        <div className={styles['conversion-chart']}>
 
-                    <label key={interval}>
-                        <input
-                            type="radio"
-                            checked={selectedInterval === interval}
-                            onChange={() => toggleInterval(interval)}
-                        />
+            <div className={styles['conversion-chart__toolbar']}>
+                <div className={styles['conversion-chart__toolbar-left']}>
 
-                        {interval}
-                    </label>
-                ))}
+                    <IntervalSelect
+                        value={selectedInterval}
+                        options={timeIntervals}
+                        onChange={setSelectedInterval}
+                    />
+
+                    <VariationSelect
+                        value={selectedVariation}
+                        options={VariationKeyById}
+                        onChange={setSelectedVariation}
+                    />
+                </div>
+                <div className={styles['conversion-chart__toolbar-right']}>
+                </div>
             </div>
+
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                     data={selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates}
                     margin={{ top: 16, right: 16, bottom: 16, left: 0 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
+                    <XAxis
+                        dataKey="date" />
                     <YAxis
                         unit="%"
                     />
@@ -79,7 +57,7 @@ export default function ConversionChart() {
                         formatter={(value: number) => `${value.toFixed(2)}%`}
                     />
                     {Object.values(VariationKeyById)
-                        .filter((name) => selectedKeys.includes(name))
+                        .filter((name) => selectedVariation.includes(name))
                         .map((name) => (
                             <Line
                                 key={name}

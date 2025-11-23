@@ -39,6 +39,8 @@ a {
     --chart-line-a: #ff7300;
     --chart-line-b: #82ca9d;
     --chart-line-c: #d84a90;
+
+    --transition-duration: 0.2s;
 }
 
 .theme-dark {
@@ -46,4 +48,12 @@ a {
     --text: #e2e8f0;
 
     --chart-grid: rgba(255, 255, 255, 0.1);
+}
+
+a,
+button,
+input,
+textarea,
+svg * {
+    transition-duration: var(--transition-duration);
 }
