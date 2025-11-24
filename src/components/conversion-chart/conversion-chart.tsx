@@ -1,7 +1,7 @@
 import { ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, } from 'recharts';
 import { getDailyChartPoints, getWeeklyChartPoints } from '../../utils/data-preparation';
 import styles from './conversion-chart.module.scss';
-import { lineStyles, timeIntervals, VariationColor, VariationKeyById } from '../../const';
+import { lineStyles, MIN_ZOOM_POINTS, timeIntervals, VariationColor, VariationKeyById, ZOOM_STEP_RATIO } from '../../const';
 import { useState } from 'react';
 import type { VariationName, TimeInterval, LineStyle } from '../../types/variation';
 import { IntervalSelect } from '../interval-select/interval-select';
@@ -40,7 +40,6 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
 
     const handleZoomReset = () => setZoomRange(null);
 
-    const MIN_POINTS = 2;
 
     const handleZoomIn = () => {
         const length = baseData.length;
@@ -48,11 +47,13 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
 
         const [start, end] = zoomRange ?? [0, length - 1];
         const current = end - start + 1;
-        if (current <= MIN_POINTS) return;
 
-        const step = Math.max(1, Math.round(current * 0.2));
+        if (current <= MIN_ZOOM_POINTS) return;
+
+        const step = Math.max(1, Math.round(current * ZOOM_STEP_RATIO));
         const newStart = start + step;
         const newEnd = end - step;
+
         if (newStart >= newEnd) return;
 
         setZoomRange([newStart, newEnd]);
@@ -63,8 +64,8 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
         if (!length) return;
 
         const [start, end] = zoomRange ?? [0, length - 1];
-        const step = Math.max(1, Math.round(length * 0.2));
 
+        const step = Math.max(1, Math.round(length * ZOOM_STEP_RATIO));
         const newStart = Math.max(0, start - step);
         const newEnd = Math.min(length - 1, end + step);
 

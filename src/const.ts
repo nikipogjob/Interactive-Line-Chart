@@ -4,6 +4,11 @@ export const DAYS_IN_A_WEEK = 7;
 export const NO_VISITS = 0;
 export const NO_CONVERSIONS = 0;
 
+export const MIN_ZOOM_POINTS = 2;
+export const ZOOM_STEP_RATIO = 0.2;
+export const INITIAL_RANGE_START = 0;
+export const INITIAL_RANGE_END = length - 1;
+
 
 export const VariationKeyById: Record<string, VariationName> = {
     '0': 'Original',
