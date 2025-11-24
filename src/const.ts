@@ -1,4 +1,4 @@
-import type { TimeInterval, VariationName } from "./types/variation";
+import type { LineStyle, TimeInterval, VariationName } from "./types/variation";
 
 export const DAYS_IN_A_WEEK = 7;
 export const NO_VISITS = 0;
@@ -19,7 +19,8 @@ export const VariationColor: Record<VariationName, string> = {
     'Variation C': '#35BDAD',
 } as const;
 
-export const timeIntervals: TimeInterval[] = ['Week', 'Day']
+export const timeIntervals: TimeInterval[] = ['Week', 'Day'];
 
+export const lineStyles: LineStyle[] = ['line', 'smooth', 'area'];
 
 

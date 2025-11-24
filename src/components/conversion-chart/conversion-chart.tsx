@@ -1,9 +1,9 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, } from 'recharts';
 import { getDailyChartPoints, getWeeklyChartPoints } from '../../utils/data-preparation';
 import styles from './conversion-chart.module.scss';
-import { timeIntervals, VariationColor, VariationKeyById } from '../../const';
+import { lineStyles, timeIntervals, VariationColor, VariationKeyById } from '../../const';
 import { useState } from 'react';
-import type { VariationName, TimeInterval } from '../../types/variation';
+import type { VariationName, TimeInterval, LineStyle } from '../../types/variation';
 import { IntervalSelect } from '../interval-select/interval-select';
 import { VariationSelect } from '../variation-select/variation-select';
 import { ConversionTooltip } from '../conversion-tooltip/conversion-tooltip';
@@ -35,6 +35,9 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
 
     const [selectedInterval, setSelectedInterval] = useState<TimeInterval>('Day');
 
+    const [lineStyle, setLineStyle] = useState<LineStyle>('line');
+    console.log(lineStyle)
+
     return (
 
         <div className={styles['conversion-chart']}>
@@ -55,7 +58,11 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                     />
                 </div>
                 <div className={styles['conversion-chart__toolbar-right']}>
-                    <LineStyleSelector />
+                    <LineStyleSelector
+                        options={lineStyles}
+                        value={lineStyle}
+                        onChange={setLineStyle}
+                    />
                     <div className={styles['conversion-chart__icon-group']}>
 
                         <button
@@ -113,7 +120,7 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
             </div>
             <div className={styles['conversion-chart__chart']}>
                 <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
+                    <ComposedChart
                         data={selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates}
                         margin={{ top: 16, right: 16, bottom: 16, left: 0 }}
                     >
@@ -129,18 +136,31 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                         />
                         {Object.values(VariationKeyById)
                             .filter((name) => selectedVariation.includes(name))
-                            .map((name) => (
-                                <Line
-                                    key={name}
-                                    type="monotone"
-                                    dataKey={name}
-                                    stroke={VariationColor[name]}
-                                    dot={false}
-                                    name={name}
-                                />
-                            ))}
+                            .map((name) =>
+                                lineStyle === 'area' ? (
+                                    <Area
+                                        key={name}
+                                        type="monotone"
+                                        dataKey={name}
+                                        stroke={VariationColor[name]}
+                                        fill={VariationColor[name]}
+                                        fillOpacity={0.16}
+                                        name={name}
+                                    />
+                                ) : (
+                                    <Line
+                                        key={name}
+                                        type={lineStyle === 'smooth' ? 'monotone' : 'linear'}
+                                        dataKey={name}
+                                        stroke={VariationColor[name]}
+                                        dot={false}
+                                        strokeWidth={2}
+                                        name={name}
+                                    />
+                                )
+                            )}
 
-                    </LineChart>
+                    </ComposedChart>
                 </ResponsiveContainer>
             </div>
         </div>

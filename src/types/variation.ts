@@ -9,3 +9,5 @@ export interface Variation {
 
 export type TimeInterval = 'Week' | 'Day';
 
+export type LineStyle = 'line' | 'smooth' | 'area';
+

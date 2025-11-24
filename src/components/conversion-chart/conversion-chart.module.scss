@@ -38,6 +38,8 @@
     &__chart {
         width: 100%;
         height: clamp(28rem, 30vw, 36rem);
+        min-height: 20rem;
+
     }
 }
 
