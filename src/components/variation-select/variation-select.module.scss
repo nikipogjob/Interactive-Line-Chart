@@ -2,6 +2,7 @@
     position: relative;
     display: inline-block;
     font-size: 1.4rem;
+
 }
 
 .variation-select__button {
@@ -10,18 +11,14 @@
     gap: 0.8rem;
     padding: 0.8rem 1.2rem;
     min-width: 9.6rem;
-    border: 0.1rem solid #d0d5dd;
+    border: 0.1rem solid var(--toolbar-button-border);
     border-radius: 0.4rem;
-    background-color: #ffffff;
+    background-color: var(--bg);
     font: inherit;
-    color: #101828;
+    color: inherit;
     cursor: pointer;
     outline: none;
 
-    &:hover {
-        background-color: #f9fafb;
-        border-color: #98a2b3;
-    }
 
     &:focus-visible {
         box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
@@ -46,9 +43,10 @@
     left: 0;
     min-width: 100%;
     padding: 0.4rem 0;
-    background-color: #ffffff;
+    background-color: var(--bg);
+    color: var(--text);
     border-radius: 6px;
-    border: 1px solid #d0d5dd;
+    border: 1px solid var(--toolbar-button-border);
     box-shadow:
         0 4px 12px rgba(15, 23, 42, 0.08),
         0 1px 2px rgba(15, 23, 42, 0.04);
@@ -63,11 +61,12 @@
     cursor: pointer;
 
     &:hover {
-        background-color: #f9fafb;
+        background-color: var(--bg);
     }
 }
 
 .variation-select__option-label {
     font-size: 1.4rem;
-    color: #101828;
+    color: var(--text);
+
 }

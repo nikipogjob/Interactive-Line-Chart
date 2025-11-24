@@ -1,13 +1,80 @@
 .conversion-chart {
-    width: '100%';
+    width: 100%;
     height: 36rem;
+    background-color: var(--bg);
+    color: var(--text);
 
     &__toolbar {
         margin-bottom: 2rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 1rem;
+        background-color: var(--bg);
+        color: var(--text);
     }
 
     &__toolbar-left {
         display: flex;
         gap: 1rem;
     }
+
+    &__toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    &__icon-group {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+}
+
+.zoom-group {
+    display: inline-flex;
+    border-radius: 0.4rem;
+    overflow: hidden;
+    border: 1px solid var(--toolbar-button-border);
+
+}
+
+.toolbar-button,
+.zoom-button {
+    width: 2.7rem;
+    height: 2.7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg);
+    border: 1px solid var(--toolbar-button-border);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    color: var(--toolbar-button-icon);
+
+}
+
+
+.zoom-button {
+    border: none;
+}
+
+.zoom-button--minus {
+    border-right: 1px solid var(--toolbar-button-border);
+    border-radius: 0.4rem 0 0 0.4rem;
+}
+
+.zoom-button--plus {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-radius: 0 0 0 0.4rem;
+
+}
+
+.toolbar-button--reset {
+    border: none;
+    background-color: var(--bg);
 }

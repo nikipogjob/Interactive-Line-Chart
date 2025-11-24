@@ -7,9 +7,24 @@ import type { VariationName, TimeInterval } from '../../types/variation';
 import { IntervalSelect } from '../interval-select/interval-select';
 import { VariationSelect } from '../variation-select/variation-select';
 import { ConversionTooltip } from '../conversion-tooltip/conversion-tooltip';
+import SelectionIcon from '../icons/selection/selection-icon';
+import { MinusIcon } from '../icons/minus/minus-icon';
+import { PlusIcon } from '../icons/plus/plus-icon';
+import { ResetIcon } from '../icons/reset/reset-icon';
+import { DownloadIcon } from '../icons/download/download-icon';
+import { LineStyleSelector } from '../line-style-selector/line-style-selector';
+import { getCssVar } from '../../utils/utils';
+import { MoonIcon } from '../icons/moon/moon-icon';
+import { SunIcon } from '../icons/sun/sun-icon';
 
 
-export default function ConversionChart() {
+interface ConversionChartProps {
+    theme: 'light' | 'dark';
+    toggleTheme: () => void;
+}
+
+
+export default function ConversionChart({ theme, toggleTheme }: ConversionChartProps) {
 
     const dailyConversionRates = getDailyChartPoints();
     const weeklyConversionRates = getWeeklyChartPoints();
@@ -40,6 +55,60 @@ export default function ConversionChart() {
                     />
                 </div>
                 <div className={styles['conversion-chart__toolbar-right']}>
+                    <LineStyleSelector />
+                    <div className={styles['conversion-chart__icon-group']}>
+
+                        <button
+                            type="button"
+                            className={styles['toolbar-button']}
+                            aria-label="Selection mode"
+                        >
+                            <SelectionIcon />
+                        </button>
+
+                        <div className={styles['zoom-group']}>
+                            <button
+                                type="button"
+                                className={styles['zoom-button'] + ' ' + styles['zoom-button--minus']}
+                                aria-label="Zoom out"
+                            >
+                                <MinusIcon />
+                            </button>
+                            <button
+                                type="button"
+                                className={styles['zoom-button'] + ' ' + styles['zoom-button--plus']}
+                                aria-label="Zoom in"
+                            >
+                                <PlusIcon />
+                            </button>
+
+
+                        </div>
+                        <button
+                            type="button"
+                            className={styles['toolbar-button'] + ' ' + styles['toolbar-button--reset']}
+                            aria-label="Reset zoom"
+                        >
+                            <ResetIcon />
+                        </button>
+
+                        <button
+                            type="button"
+                            className={styles['toolbar-button']}
+                            aria-label="Export as PNG"
+                        >
+                            <DownloadIcon />
+                        </button>
+
+                        <button
+                            type="button"
+                            className={styles['toolbar-button']}
+                            aria-label="Toggle theme"
+                            onClick={toggleTheme}
+                        >
+                            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -48,7 +117,7 @@ export default function ConversionChart() {
                     data={selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates}
                     margin={{ top: 16, right: 16, bottom: 16, left: 0 }}
                 >
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid stroke={getCssVar('--chart-grid')} />
                     <XAxis
                         dataKey="date" />
                     <YAxis

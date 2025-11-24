@@ -1,7 +1,7 @@
 import styles from "./variation-select.module.scss";
 import { useEffect, useRef, useState } from "react";
 import type { VariationName } from "../../types/variation";
-import { ChevronIcon } from "../icons/chevron-icon/chevron-icon";
+import { ChevronIcon } from "../icons/chevron/chevron-icon";
 
 interface VariationSelectProps {
     value: VariationName[];

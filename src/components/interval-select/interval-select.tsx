@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { TimeInterval } from '../../types/variation';
 import styles from './interval-select.module.scss';
-import { ChevronIcon } from '../icons/chevron-icon/chevron-icon';
+import { ChevronIcon } from '../icons/chevron/chevron-icon';
 
 interface IntervalSelectProps {
     value: TimeInterval;

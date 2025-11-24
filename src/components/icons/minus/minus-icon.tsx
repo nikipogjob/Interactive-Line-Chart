@@ -1,0 +1,8 @@
+export function MinusIcon() {
+
+    return (
+        <svg width="11" height="1.375" viewBox="0 0 11 1.375" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0L0 1.375L11 1.375L11 0L0 0Z" fill="#5E5D67" />
+        </svg>
+    )
+};

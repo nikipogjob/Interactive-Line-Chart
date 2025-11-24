@@ -17,6 +17,8 @@ body {
     background-color: #fff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
 
@@ -27,10 +29,12 @@ a {
 
 
 #root {
-    max-width: 1280px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 2rem;
+}
 
+:root {
     --bg: #ffffff;
     --text: #111111;
 
@@ -40,15 +44,24 @@ a {
     --chart-line-b: #82ca9d;
     --chart-line-c: #d84a90;
 
+    --toolbar-button-bg: #ffffff;
+    --toolbar-button-border: #e1dfe7;
+    --toolbar-button-icon: #5e5d67;
+
     --transition-duration: 0.2s;
 }
 
-.theme-dark {
-    --bg: #0f172a;
-    --text: #e2e8f0;
+:root.theme-dark {
+    --bg: #000027;
+    --text: #918f9a;
+
+    --toolbar-button-bg: #020230;
+    --toolbar-button-border: #4b4765;
 
     --chart-grid: rgba(255, 255, 255, 0.1);
 }
+
+
 
 a,
 button,

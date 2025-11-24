@@ -1,0 +1,30 @@
+.line-style-selector {
+    position: relative;
+    display: inline-block;
+    font-size: 1.4rem;
+}
+
+.line-style-selector__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1.2rem;
+    min-width: 9.6rem;
+    border: 0.1rem solid var(--toolbar-button-border);
+    border-radius: 0.4rem;
+    background-color: inherit;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+
+
+    &:focus-visible {
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
+        border-color: #2563eb;
+    }
+}
+
+.line-style-selector__label {
+    white-space: nowrap;
+}

@@ -1,7 +1,7 @@
 import type { ValueType, NameType, Payload } from 'recharts/types/component/DefaultTooltipContent';
 import styles from './conversion-tooltip.module.scss';
-import { CalendarIcon } from '../icons/calendar-icon/calendar-icon';
-import WinnerIcon from '../icons/winner-icon/winner-icon';
+import { CalendarIcon } from '../icons/calendar/calendar-icon';
+import WinnerIcon from '../icons/winner/winner-icon';
 
 
 type ConversionTooltipProps = {

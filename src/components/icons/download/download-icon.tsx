@@ -1,0 +1,50 @@
+export function DownloadIcon(props: React.SVGProps<SVGSVGElement>) {
+    return (
+        <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            {...props}
+        >
+            <line
+                x1="7"
+                y1="2"
+                x2="7"
+                y2="8"
+                stroke="#5E5D67"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+            />
+            <line
+                x1="5"
+                y1="6.5"
+                x2="7"
+                y2="8.5"
+                stroke="#5E5D67"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <line
+                x1="9"
+                y1="6.5"
+                x2="7"
+                y2="8.5"
+                stroke="#5E5D67"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <rect
+                x="3"
+                y="10.5"
+                width="8"
+                height="1"
+                rx="0.5"
+                fill="#5E5D67"
+            />
+        </svg>
+    );
+}
