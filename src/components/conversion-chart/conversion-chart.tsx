@@ -34,9 +34,62 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
     );
 
     const [selectedInterval, setSelectedInterval] = useState<TimeInterval>('Day');
+    const baseData = selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates;
+
+    const [zoomRange, setZoomRange] = useState<[number, number] | null>(null);
+
+    const handleZoomReset = () => setZoomRange(null);
+
+    const MIN_POINTS = 2;
+
+    const handleZoomIn = () => {
+        const length = baseData.length;
+        if (!length) return;
+
+        const [start, end] = zoomRange ?? [0, length - 1];
+        const current = end - start + 1;
+        if (current <= MIN_POINTS) return;
+
+        const step = Math.max(1, Math.round(current * 0.2));
+        const newStart = start + step;
+        const newEnd = end - step;
+        if (newStart >= newEnd) return;
+
+        setZoomRange([newStart, newEnd]);
+    };
+
+    const handleZoomOut = () => {
+        const length = baseData.length;
+        if (!length) return;
+
+        const [start, end] = zoomRange ?? [0, length - 1];
+        const step = Math.max(1, Math.round(length * 0.2));
+
+        const newStart = Math.max(0, start - step);
+        const newEnd = Math.min(length - 1, end + step);
+
+        if (newStart === start && newEnd === end) {
+            setZoomRange(null);
+        } else {
+            setZoomRange([newStart, newEnd]);
+        }
+    };
+
+    const visibleData = zoomRange
+        ? baseData.slice(zoomRange[0], zoomRange[1] + 1)
+        : baseData;
 
     const [lineStyle, setLineStyle] = useState<LineStyle>('line');
-    console.log(lineStyle)
+
+    const handleIntervalChange = (value: TimeInterval) => {
+        setSelectedInterval(value);
+        setZoomRange(null);
+    };
+
+    const handleVariationChange = (value: VariationName[]) => {
+        setSelectedVariation(value);
+        setZoomRange(null);
+    };
 
     return (
 
@@ -48,13 +101,13 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                     <IntervalSelect
                         value={selectedInterval}
                         options={timeIntervals}
-                        onChange={setSelectedInterval}
+                        onChange={handleIntervalChange}
                     />
 
                     <VariationSelect
                         value={selectedVariation}
                         options={VariationKeyById}
-                        onChange={setSelectedVariation}
+                        onChange={handleVariationChange}
                     />
                 </div>
                 <div className={styles['conversion-chart__toolbar-right']}>
@@ -78,6 +131,7 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                                 type="button"
                                 className={styles['zoom-button'] + ' ' + styles['zoom-button--minus']}
                                 aria-label="Zoom out"
+                                onClick={handleZoomOut}
                             >
                                 <MinusIcon />
                             </button>
@@ -85,6 +139,7 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                                 type="button"
                                 className={styles['zoom-button'] + ' ' + styles['zoom-button--plus']}
                                 aria-label="Zoom in"
+                                onClick={handleZoomIn}
                             >
                                 <PlusIcon />
                             </button>
@@ -95,6 +150,7 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                             type="button"
                             className={styles['toolbar-button'] + ' ' + styles['toolbar-button--reset']}
                             aria-label="Reset zoom"
+                            onClick={handleZoomReset}
                         >
                             <ResetIcon />
                         </button>
@@ -121,7 +177,7 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
             <div className={styles['conversion-chart__chart']}>
                 <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
-                        data={selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates}
+                        data={visibleData}
                         margin={{ top: 16, right: 16, bottom: 16, left: 0 }}
                     >
                         <CartesianGrid stroke={getCssVar('--chart-grid')} />
