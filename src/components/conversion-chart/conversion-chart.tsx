@@ -111,37 +111,38 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                     </div>
                 </div>
             </div>
+            <div className={styles['conversion-chart__chart']}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                        data={selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates}
+                        margin={{ top: 16, right: 16, bottom: 16, left: 0 }}
+                    >
+                        <CartesianGrid stroke={getCssVar('--chart-grid')} />
+                        <XAxis
+                            dataKey="date" />
+                        <YAxis
+                            unit="%"
+                        />
+                        <Tooltip
+                            content={<ConversionTooltip />}
+                            cursor={{ stroke: '#D0D5DD', strokeWidth: 1 }}
+                        />
+                        {Object.values(VariationKeyById)
+                            .filter((name) => selectedVariation.includes(name))
+                            .map((name) => (
+                                <Line
+                                    key={name}
+                                    type="monotone"
+                                    dataKey={name}
+                                    stroke={VariationColor[name]}
+                                    dot={false}
+                                    name={name}
+                                />
+                            ))}
 
-            <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                    data={selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates}
-                    margin={{ top: 16, right: 16, bottom: 16, left: 0 }}
-                >
-                    <CartesianGrid stroke={getCssVar('--chart-grid')} />
-                    <XAxis
-                        dataKey="date" />
-                    <YAxis
-                        unit="%"
-                    />
-                    <Tooltip
-                        content={<ConversionTooltip />}
-                        cursor={{ stroke: '#D0D5DD', strokeWidth: 1 }}
-                    />
-                    {Object.values(VariationKeyById)
-                        .filter((name) => selectedVariation.includes(name))
-                        .map((name) => (
-                            <Line
-                                key={name}
-                                type="monotone"
-                                dataKey={name}
-                                stroke={VariationColor[name]}
-                                dot={false}
-                                name={name}
-                            />
-                        ))}
-
-                </LineChart>
-            </ResponsiveContainer>
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 }
