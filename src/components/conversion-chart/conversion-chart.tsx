@@ -100,77 +100,56 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
         const wrapper = chartWrapperRef.current;
         if (!wrapper) return;
 
-        const svg = wrapper.querySelector('.recharts-surface');
+        const svg = wrapper.querySelector('.recharts-surface') as SVGSVGElement | null;
         if (!svg) return;
 
-        const svgRect = svg.getBoundingClientRect();
-        const width = svgRect.width;
-        const height = svgRect.height;
-
+        const { width, height } = svg.getBoundingClientRect();
         if (!width || !height) return;
 
         const serializer = new XMLSerializer();
-        let svgData = serializer.serializeToString(svg);
+        const svgString = serializer.serializeToString(svg);
 
-        if (!svgData.includes('http://www.w3.org/2000/svg')) {
-            svgData = svgData.replace(
-                '<svg',
-                '<svg xmlns="http://www.w3.org/2000/svg"'
-            );
-        }
-
-        const svgBlob = new Blob([svgData], {
+        const svgBlob = new Blob([svgString], {
             type: 'image/svg+xml;charset=utf-8',
         });
-        const url = URL.createObjectURL(svgBlob);
+        const svgUrl = URL.createObjectURL(svgBlob);
 
         const img = new Image();
+
         img.onload = () => {
             const canvas = document.createElement('canvas');
-            const dpr = window.devicePixelRatio || 1;
-
-            canvas.width = width * dpr;
-            canvas.height = height * dpr;
+            canvas.width = width;
+            canvas.height = height;
 
             const ctx = canvas.getContext('2d');
-            if (!ctx) {
-                URL.revokeObjectURL(url);
-                return;
-            }
+            if (!ctx) return;
 
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-            const rootStyles = getComputedStyle(document.documentElement);
-            const bgColor = rootStyles.getPropertyValue('--bg').trim() || '#ffffff';
-            ctx.fillStyle = bgColor;
-            ctx.fillRect(0, 0, width, height);
             ctx.drawImage(img, 0, 0, width, height);
-
-            URL.revokeObjectURL(url);
+            URL.revokeObjectURL(svgUrl);
 
             canvas.toBlob((blob) => {
                 if (!blob) return;
 
                 const pngUrl = URL.createObjectURL(blob);
-
                 const link = document.createElement('a');
+
                 link.href = pngUrl;
-                link.download = `conversion-chart-${selectedInterval.toLowerCase()}.png`;
+                link.download = 'conversion-chart.png';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
                 URL.revokeObjectURL(pngUrl);
             }, 'image/png');
-
         };
 
         img.onerror = () => {
-            URL.revokeObjectURL(url);
+            URL.revokeObjectURL(svgUrl);
         };
 
-        img.src = url;
+        img.src = svgUrl;
     };
+
 
     return (
 

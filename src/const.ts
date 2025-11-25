@@ -9,6 +9,10 @@ export const ZOOM_STEP_RATIO = 0.2;
 export const INITIAL_RANGE_START = 0;
 export const INITIAL_RANGE_END = length - 1;
 
+export const EXPORT_FILE_PREFIX = 'conversion-chart';
+export const EXPORT_BG_FALLBACK = '#ffffff';
+export const SVG_SELECTOR = '.recharts-surface';
+
 
 export const VariationKeyById: Record<string, VariationName> = {
     '0': 'Original',
