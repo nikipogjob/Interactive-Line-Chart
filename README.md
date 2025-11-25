@@ -1,73 +1,66 @@
-# React + TypeScript + Vite
+## Name
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ Test Assignment: Interactive Line Chart
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Description
 
-## React Compiler
+This single-page application visualizes key [A/B testing](https://en.wikipedia.org/wiki/A/B_testing) metrics over a selected time period.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+## Implemented Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Daily and weekly data visualization in percentages with controls
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Hover tooltip with detailed metrics
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Variation selector (Original, Variation A/B/C) with at least one is always selected
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Automatic aspect-ratio handling based on container size
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Responsive layout and adaptive chart resizing
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Bonus Features**
+
+Zoom in/out functionality
+
+Line style selection
+
+Light/Dark theme switcher
+
+Download current chart state as PNG
+
+
+## Installation
+
+1. Download the ZIP archive from the [repository](https://github.com/nikipogjob/Interactive-Line-Chart).
+
+2. Unpack it locally.
+
+3. Open the project directory in any code editor.
+
+4. Run the following commands in your terminal:
+   - `npm i`
+   - `npm run dev`
+
+5. Open `http://localhost:5173/` in your browser.
+
+**Requirements**
+- Node.js 18 or higher
+- npm 9 or higher
+
+
+## Technologies
+
+- React 19
+- TypeScript
+- Vite
+- Recharts
+- SCSS Modules
+
+
+## Live demo
+
+https://nikipogjob.github.io/Interactive-Line-Chart/
+
