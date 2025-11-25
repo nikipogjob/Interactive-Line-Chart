@@ -191,18 +191,18 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
 
             <div className={styles['conversion-chart__toolbar']}>
                 <div className={styles['conversion-chart__toolbar-left']}>
-
+                    <VariationSelect
+                        value={selectedVariation}
+                        options={VariationKeyById}
+                        onChange={handleVariationChange}
+                    />
                     <IntervalSelect
                         value={selectedInterval}
                         options={timeIntervals}
                         onChange={handleIntervalChange}
                     />
 
-                    <VariationSelect
-                        value={selectedVariation}
-                        options={VariationKeyById}
-                        onChange={handleVariationChange}
-                    />
+
                 </div>
                 <div className={styles['conversion-chart__toolbar-right']}>
                     <LineStyleSelector
