@@ -2,7 +2,7 @@ import { ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, Respon
 import { getDailyChartPoints, getWeeklyChartPoints } from '../../utils/data-preparation';
 import styles from './conversion-chart.module.scss';
 import { lineStyles, MIN_ZOOM_POINTS, timeIntervals, VariationColor, VariationKeyById, ZOOM_STEP_RATIO } from '../../const';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { VariationName, TimeInterval, LineStyle } from '../../types/variation';
 import { IntervalSelect } from '../interval-select/interval-select';
 import { VariationSelect } from '../variation-select/variation-select';
@@ -29,14 +29,18 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
     const dailyConversionRates = getDailyChartPoints();
     const weeklyConversionRates = getWeeklyChartPoints();
 
+    const chartWrapperRef = useRef<HTMLDivElement | null>(null);
+
     const [selectedVariation, setSelectedVariation] = useState<VariationName[]>(
         Object.values(VariationKeyById)
     );
 
     const [selectedInterval, setSelectedInterval] = useState<TimeInterval>('Day');
-    const baseData = selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates;
 
     const [zoomRange, setZoomRange] = useState<[number, number] | null>(null);
+
+    const baseData = selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates;
+
 
     const handleZoomReset = () => setZoomRange(null);
 
@@ -92,9 +96,88 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
         setZoomRange(null);
     };
 
+    const handleExportPng = () => {
+        const wrapper = chartWrapperRef.current;
+        if (!wrapper) return;
+
+        const svg = wrapper.querySelector('.recharts-surface');
+        if (!svg) return;
+
+        const svgRect = svg.getBoundingClientRect();
+        const width = svgRect.width;
+        const height = svgRect.height;
+
+        if (!width || !height) return;
+
+        const serializer = new XMLSerializer();
+        let svgData = serializer.serializeToString(svg);
+
+        if (!svgData.includes('http://www.w3.org/2000/svg')) {
+            svgData = svgData.replace(
+                '<svg',
+                '<svg xmlns="http://www.w3.org/2000/svg"'
+            );
+        }
+
+        const svgBlob = new Blob([svgData], {
+            type: 'image/svg+xml;charset=utf-8',
+        });
+        const url = URL.createObjectURL(svgBlob);
+
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const dpr = window.devicePixelRatio || 1;
+
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                URL.revokeObjectURL(url);
+                return;
+            }
+
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const rootStyles = getComputedStyle(document.documentElement);
+            const bgColor = rootStyles.getPropertyValue('--bg').trim() || '#ffffff';
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+
+            URL.revokeObjectURL(url);
+
+            canvas.toBlob((blob) => {
+                if (!blob) return;
+
+                const pngUrl = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = pngUrl;
+                link.download = `conversion-chart-${selectedInterval.toLowerCase()}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                URL.revokeObjectURL(pngUrl);
+            }, 'image/png');
+
+        };
+
+        img.onerror = () => {
+            URL.revokeObjectURL(url);
+        };
+
+        img.src = url;
+    };
+
     return (
 
-        <div className={styles['conversion-chart']}>
+        <div
+            className={styles['conversion-chart']}
+
+        >
 
             <div className={styles['conversion-chart__toolbar']}>
                 <div className={styles['conversion-chart__toolbar-left']}>
@@ -160,6 +243,7 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                             type="button"
                             className={styles['toolbar-button']}
                             aria-label="Export as PNG"
+                            onClick={handleExportPng}
                         >
                             <DownloadIcon />
                         </button>
@@ -175,7 +259,10 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                     </div>
                 </div>
             </div>
-            <div className={styles['conversion-chart__chart']}>
+            <div
+                className={styles['conversion-chart__chart']}
+                ref={chartWrapperRef}
+            >
                 <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
                         data={visibleData}
