@@ -49,10 +49,13 @@
     border-radius: 0.4rem;
     overflow: hidden;
     border: 1px solid var(--toolbar-button-border);
+    height: clamp(2.4rem, 2.1vw, 2.7rem);
 }
 
 .toolbar-button,
 .zoom-button {
+    box-sizing: border-box;
+    padding: 0;
     width: clamp(2.4rem, 2.1vw, 2.7rem);
     height: clamp(2.4rem, 2.1vw, 2.7rem);
     display: inline-flex;
