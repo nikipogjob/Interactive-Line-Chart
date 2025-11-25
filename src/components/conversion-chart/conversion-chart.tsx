@@ -2,7 +2,7 @@ import { ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, Respon
 import { getDailyChartPoints, getWeeklyChartPoints } from '../../utils/data-preparation';
 import styles from './conversion-chart.module.scss';
 import { lineStyles, MIN_ZOOM_POINTS, timeIntervals, VariationColor, VariationKeyById, ZOOM_STEP_RATIO } from '../../const';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { VariationName, TimeInterval, LineStyle } from '../../types/variation';
 import { IntervalSelect } from '../interval-select/interval-select';
 import { VariationSelect } from '../variation-select/variation-select';
@@ -23,7 +23,6 @@ interface ConversionChartProps {
     toggleTheme: () => void;
 }
 
-
 export default function ConversionChart({ theme, toggleTheme }: ConversionChartProps) {
 
     const dailyConversionRates = getDailyChartPoints();
@@ -39,7 +38,39 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
 
     const [zoomRange, setZoomRange] = useState<[number, number] | null>(null);
 
-    const baseData = selectedInterval === 'Day' ? dailyConversionRates : weeklyConversionRates;
+    const [lineStyle, setLineStyle] = useState<LineStyle>('line');
+
+    const renderedLines = useMemo(() => {
+        return Object.values(VariationKeyById)
+            .filter(name => selectedVariation.includes(name))
+            .map(name =>
+                lineStyle === 'area' ? (
+                    <Area
+                        key={name}
+                        type="monotone"
+                        dataKey={name}
+                        stroke={VariationColor[name]}
+                        fill={VariationColor[name]}
+                        fillOpacity={0.16}
+                        name={name}
+                    />
+                ) : (
+                    <Line
+                        key={name}
+                        type={lineStyle === 'smooth' ? 'monotone' : 'linear'}
+                        dataKey={name}
+                        stroke={VariationColor[name]}
+                        dot={false}
+                        strokeWidth={2}
+                        name={name}
+                    />
+                )
+            );
+    }, [selectedVariation, lineStyle]);
+
+    const baseData = selectedInterval === 'Day'
+        ? dailyConversionRates
+        : weeklyConversionRates;
 
 
     const handleZoomReset = () => setZoomRange(null);
@@ -84,7 +115,7 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
         ? baseData.slice(zoomRange[0], zoomRange[1] + 1)
         : baseData;
 
-    const [lineStyle, setLineStyle] = useState<LineStyle>('line');
+
 
     const handleIntervalChange = (value: TimeInterval) => {
         setSelectedInterval(value);
@@ -257,31 +288,7 @@ export default function ConversionChart({ theme, toggleTheme }: ConversionChartP
                             content={<ConversionTooltip />}
                             cursor={{ stroke: '#D0D5DD', strokeWidth: 1 }}
                         />
-                        {Object.values(VariationKeyById)
-                            .filter((name) => selectedVariation.includes(name))
-                            .map((name) =>
-                                lineStyle === 'area' ? (
-                                    <Area
-                                        key={name}
-                                        type="monotone"
-                                        dataKey={name}
-                                        stroke={VariationColor[name]}
-                                        fill={VariationColor[name]}
-                                        fillOpacity={0.16}
-                                        name={name}
-                                    />
-                                ) : (
-                                    <Line
-                                        key={name}
-                                        type={lineStyle === 'smooth' ? 'monotone' : 'linear'}
-                                        dataKey={name}
-                                        stroke={VariationColor[name]}
-                                        dot={false}
-                                        strokeWidth={2}
-                                        name={name}
-                                    />
-                                )
-                            )}
+                        {renderedLines}
 
                     </ComposedChart>
                 </ResponsiveContainer>
